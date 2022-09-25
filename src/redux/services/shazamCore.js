@@ -1,11 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+console.log(import.meta.env.VITE_SHAZAM_CORE_RAPID_API_KEY);
+
 export const shazamCoreApi = createApi({
     reducerPath: 'shazamCoreApi',
     baseQuery: fetchBaseQuery({
         baseUrl: 'https://shazam-core.p.rapidapi.com/v1',
         prepareHeaders: (headers) => {
-            headers.set('X-RapidAPI-Key', '7cf4dcc343msh6b587335e7d6fb6p163b95jsn6b6dc7f90285');
+            headers.set('X-RapidAPI-Key', import.meta.env.VITE_SHAZAM_CORE_RAPID_API_KEY);
             return headers;
         }
     }),
@@ -14,8 +16,15 @@ export const shazamCoreApi = createApi({
         getSongDetails: builder.query({ query: ({ songid }) => `/tracks/details?track_id=${songid}` }),
         getSongRelated: builder.query({ query: ({ songid }) => `/tracks/related?track_id=${songid}` }),
         getArtistDetails: builder.query({ query: (artistid) => `/artists/details?artist_id=${artistid}` }),
+        getSongsByCountry: builder.query({ query: (countryCode) => `/charts/country?country_code=${countryCode ? countryCode : 'US'}` }),
     })
 
 })
 
-export const { useGetTopChartsQuery, useGetSongDetailsQuery, useGetSongRelatedQuery, useGetArtistDetailsQuery } = shazamCoreApi;
+export const {
+    useGetTopChartsQuery,
+    useGetSongDetailsQuery,
+    useGetSongRelatedQuery,
+    useGetArtistDetailsQuery,
+    useGetSongsByCountryQuery
+} = shazamCoreApi;
