@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from "react";
 
 const Player = ({ activeSong, isPlaying, volume, seekTime, onEnded, onTimeUpdate, onLoadedData, repeat }) => {
   const ref = useRef(null);
@@ -20,15 +20,14 @@ const Player = ({ activeSong, isPlaying, volume, seekTime, onEnded, onTimeUpdate
     ref.current.currentTime = seekTime;
   }, [seekTime]);
 
+  if (activeSong?.attributes) {
+    const uri = activeSong?.attributes?.previews[0].url;
+
+    return <audio src={uri} ref={ref} loop={repeat} onEnded={onEnded} onTimeUpdate={onTimeUpdate} onLoadedData={onLoadedData} />;
+  }
+
   return (
-    <audio
-      src={activeSong?.hub?.actions[1]?.uri}
-      ref={ref}
-      loop={repeat}
-      onEnded={onEnded}
-      onTimeUpdate={onTimeUpdate}
-      onLoadedData={onLoadedData}
-    />
+    <audio src={activeSong?.hub?.actions[1]?.uri} ref={ref} loop={repeat} onEnded={onEnded} onTimeUpdate={onTimeUpdate} onLoadedData={onLoadedData} />
   );
 };
 
